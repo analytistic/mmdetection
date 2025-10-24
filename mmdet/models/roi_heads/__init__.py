@@ -13,7 +13,6 @@ from .mask_heads import (CoarseMaskHead, FCNMaskHead, FeatureRelayHead,
                          HTCMaskHead, MaskIoUHead, MaskPointHead,
                          SCNetMaskHead, SCNetSemanticHead)
 from .mask_scoring_roi_head import MaskScoringRoIHead
-from .multi_instance_roi_head import MultiInstanceRoIHead
 from .pisa_roi_head import PISARoIHead
 from .point_rend_roi_head import PointRendRoIHead
 from .roi_extractors import (BaseRoIExtractor, GenericRoIExtractor,
@@ -23,6 +22,11 @@ from .shared_heads import ResLayer
 from .sparse_roi_head import SparseRoIHead
 from .standard_roi_head import StandardRoIHead
 from .trident_roi_head import TridentRoIHead
+
+from .cascade_roi_head_LGF import (CascadeRoIHead_LGF, 
+                                   LocalGlobal_Context_Fuser, SELayer)
+from .cascade_roi_head_LGTransformer import (CascadeRoIHead_LGTrans,)
+from .bbox_encoding_transformer import BboxEncoder
 
 __all__ = [
     'BaseRoIHead', 'CascadeRoIHead', 'DoubleHeadRoIHead', 'MaskScoringRoIHead',
@@ -34,5 +38,6 @@ __all__ = [
     'SingleRoIExtractor', 'PISARoIHead', 'PointRendRoIHead', 'MaskPointHead',
     'CoarseMaskHead', 'DynamicRoIHead', 'SparseRoIHead', 'TridentRoIHead',
     'SCNetRoIHead', 'SCNetMaskHead', 'SCNetSemanticHead', 'SCNetBBoxHead',
-    'FeatureRelayHead', 'GlobalContextHead', 'MultiInstanceRoIHead'
+    'FeatureRelayHead', 'GlobalContextHead', 'CascadeRoIHead_LGF', 
+    "LocalGlobal_Context_Fuser", "SELayer", "BboxEncoder"
 ]
