@@ -14,13 +14,21 @@ Collections:
       Title: 'Weight Standardization'
     README: configs/gn+ws/README.md
     Code:
+<<<<<<< HEAD
       URL: https://github.com/open-mmlab/mmdetection/blob/v2.0.0/configs/gn%2Bws/mask-rcnn_r50_fpn_gn-ws-all_2x_coco.py
+=======
+      URL: https://github.com/open-mmlab/mmdetection/blob/v2.0.0/configs/gn+ws/mask_rcnn_r50_fpn_gn_ws-all_2x_coco.py
+>>>>>>> feature/chartdete
       Version: v2.0.0
 
 Models:
   - Name: faster-rcnn_r50_fpn_gn_ws-all_1x_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/faster-rcnn_r50_fpn_gn-ws-all_1x_coco.py
+=======
+    Config: configs/gn+ws/faster_rcnn_r50_fpn_gn_ws-all_1x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 5.9
       inference time (ms/im):
@@ -40,7 +48,11 @@ Models:
 
   - Name: faster-rcnn_r101_fpn_gn-ws-all_1x_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/faster-rcnn_r101_fpn_gn-ws-all_1x_coco.py
+=======
+    Config: configs/gn+ws/faster_rcnn_r101_fpn_gn_ws-all_1x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 8.9
       inference time (ms/im):
@@ -60,7 +72,11 @@ Models:
 
   - Name: faster-rcnn_x50-32x4d_fpn_gn-ws-all_1x_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/faster-rcnn_x50-32x4d_fpn_gn-ws-all_1x_coco.py
+=======
+    Config: configs/gn+ws/faster_rcnn_x50_32x4d_fpn_gn_ws-all_1x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 7.0
       inference time (ms/im):
@@ -80,7 +96,11 @@ Models:
 
   - Name: faster-rcnn_x101-32x4d_fpn_gn-ws-all_1x_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/faster-rcnn_x101-32x4d_fpn_gn-ws-all_1x_coco.py
+=======
+    Config: configs/gn+ws/faster_rcnn_x101_32x4d_fpn_gn_ws-all_1x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 10.8
       inference time (ms/im):
@@ -100,7 +120,11 @@ Models:
 
   - Name: mask-rcnn_r50_fpn_gn_ws-all_2x_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/mask-rcnn_r50_fpn_gn-ws-all_2x_coco.py
+=======
+    Config: configs/gn+ws/mask_rcnn_r50_fpn_gn_ws-all_2x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 7.3
       inference time (ms/im):
@@ -124,7 +148,11 @@ Models:
 
   - Name: mask-rcnn_r101_fpn_gn-ws-all_2x_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/mask-rcnn_r101_fpn_gn-ws-all_2x_coco.py
+=======
+    Config: configs/gn+ws/mask_rcnn_r101_fpn_gn_ws-all_2x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 10.3
       inference time (ms/im):
@@ -148,7 +176,11 @@ Models:
 
   - Name: mask-rcnn_x50-32x4d_fpn_gn-ws-all_2x_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/mask-rcnn_x50-32x4d_fpn_gn-ws-all_2x_coco.py
+=======
+    Config: configs/gn+ws/mask_rcnn_x50_32x4d_fpn_gn_ws-all_2x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 8.4
       inference time (ms/im):
@@ -172,7 +204,11 @@ Models:
 
   - Name: mask-rcnn_x101-32x4d_fpn_gn-ws-all_2x_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/mask-rcnn_x101-32x4d_fpn_gn-ws-all_2x_coco.py
+=======
+    Config: configs/gn+ws/mask_rcnn_x101_32x4d_fpn_gn_ws-all_2x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 12.2
       inference time (ms/im):
@@ -196,7 +232,11 @@ Models:
 
   - Name: mask-rcnn_r50_fpn_gn_ws-all_20_23_24e_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/mask-rcnn_r50_fpn_gn-ws-all_20-23-24e_coco.py
+=======
+    Config: configs/gn+ws/mask_rcnn_r50_fpn_gn_ws-all_20_23_24e_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 7.3
       Epochs: 24
@@ -213,7 +253,11 @@ Models:
 
   - Name: mask-rcnn_r101_fpn_gn-ws-all_20-23-24e_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/mask-rcnn_r101_fpn_gn-ws-all_20-23-24e_coco.py
+=======
+    Config: configs/gn+ws/mask_rcnn_r101_fpn_gn_ws-all_20_23_24e_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 10.3
       Epochs: 24
@@ -230,7 +274,11 @@ Models:
 
   - Name: mask-rcnn_x50-32x4d_fpn_gn-ws-all_20-23-24e_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/mask-rcnn_x50-32x4d_fpn_gn-ws-all_20-23-24e_coco.py
+=======
+    Config: configs/gn+ws/mask_rcnn_x50_32x4d_fpn_gn_ws-all_20_23_24e_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 8.4
       Epochs: 24
@@ -247,7 +295,11 @@ Models:
 
   - Name: mask-rcnn_x101-32x4d_fpn_gn-ws-all_20-23-24e_coco
     In Collection: Weight Standardization
+<<<<<<< HEAD
     Config: configs/gn%2Bws/mask-rcnn_x101-32x4d_fpn_gn-ws-all_20-23-24e_coco.py
+=======
+    Config: configs/gn+ws/mask_rcnn_x101_32x4d_fpn_gn_ws-all_20_23_24e_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 12.2
       Epochs: 24

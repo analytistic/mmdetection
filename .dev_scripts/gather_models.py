@@ -113,7 +113,11 @@ def get_dataset_name(config):
         OpenImagesChallengeDataset='OpenImagesChallengeDataset',
         Objects365V1Dataset='Objects365 v1',
         Objects365V2Dataset='Objects365 v2')
+<<<<<<< HEAD
     cfg = Config.fromfile('./configs/' + config)
+=======
+    cfg = mmcv.Config.fromfile('./configs/' + config)
+>>>>>>> feature/chartdete
     return name_map[cfg.dataset_type]
 
 

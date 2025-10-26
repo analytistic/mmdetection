@@ -10,11 +10,18 @@ from mmcv.cnn import ConvModule
 from mmengine.structures import InstanceData
 from torch import Tensor
 
+<<<<<<< HEAD
 from mmdet.models.utils.misc import floordiv
 from mmdet.registry import MODELS
 from mmdet.utils import ConfigType, InstanceList, MultiConfig, OptConfigType
 from ..layers import mask_matrix_nms
 from ..utils import center_of_mass, generate_coordinate, multi_apply
+=======
+from mmdet.core import InstanceData, mask_matrix_nms, multi_apply
+from mmdet.core.utils import center_of_mass, generate_coordinate
+from mmdet.models.builder import HEADS, build_loss
+from mmdet.utils.misc import floordiv
+>>>>>>> feature/chartdete
 from .base_mask_head import BaseMaskHead
 
 

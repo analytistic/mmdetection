@@ -2,7 +2,10 @@ matplotlib
 numpy
 pycocotools
 scipy
+<<<<<<< HEAD
 shapely
+=======
+>>>>>>> feature/chartdete
 six
 terminaltables
 tqdm

@@ -113,6 +113,12 @@ def init_detector(
     model.cfg = config  # save the config in the model for convenience
     model.to(device)
     model.eval()
+
+    if device == 'npu':
+        from mmcv.device.npu import NPUDataParallel
+        model = NPUDataParallel(model)
+        model.cfg = config
+
     return model
 
 

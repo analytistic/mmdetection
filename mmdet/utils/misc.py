@@ -6,6 +6,7 @@ import urllib
 import warnings
 from typing import Union
 
+<<<<<<< HEAD
 import torch
 from mmengine.config import Config, ConfigDict
 from mmengine.logging import print_log
@@ -13,6 +14,11 @@ from mmengine.utils import scandir
 
 IMG_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.ppm', '.bmp', '.pgm', '.tif',
                   '.tiff', '.webp')
+=======
+import mmcv
+import torch
+from mmcv.utils import TORCH_VERSION, digit_version, print_log
+>>>>>>> feature/chartdete
 
 
 def find_latest_checkpoint(path, suffix='pth'):
@@ -83,6 +89,7 @@ def update_data_root(cfg, logger=None):
     cfg.data_root = dst_root
 
 
+<<<<<<< HEAD
 def get_test_pipeline_cfg(cfg: Union[str, ConfigDict]) -> ConfigDict:
     """Get the test dataset pipeline from entire config.
 
@@ -147,3 +154,15 @@ def get_file_list(source_root: str) -> [list, dict]:
     source_type = dict(is_dir=is_dir, is_url=is_url, is_file=is_file)
 
     return source_file_path_list, source_type
+=======
+_torch_version_div_indexing = (
+    'parrots' not in TORCH_VERSION
+    and digit_version(TORCH_VERSION) >= digit_version('1.8'))
+
+
+def floordiv(dividend, divisor, rounding_mode='trunc'):
+    if _torch_version_div_indexing:
+        return torch.div(dividend, divisor, rounding_mode=rounding_mode)
+    else:
+        return dividend // divisor
+>>>>>>> feature/chartdete

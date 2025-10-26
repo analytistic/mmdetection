@@ -35,7 +35,11 @@ Models:
 
   - Name: ssd300_32xb8-36e_openimages
     In Collection: SSD
+<<<<<<< HEAD
     Config: configs/openimages/ssd300_32xb8-36e_openimages.py
+=======
+    Config: configs/openimages/ssd300_32x8_36e_openimages.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 10.8
       Epochs: 36

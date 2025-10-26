@@ -3,8 +3,13 @@ ARG CUDA="11.1"
 ARG CUDNN="8"
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
+<<<<<<< HEAD
 ARG MMCV="2.0.0rc4"
 ARG MMDET="3.3.0"
+=======
+ARG MMCV="1.3.17"
+ARG MMDET="2.28.2"
+>>>>>>> feature/chartdete
 
 ENV PYTHONUNBUFFERED TRUE
 

@@ -225,7 +225,148 @@ class OpenImagesDataset(BaseDetDataset):
             hierarchy_file (str): File path to the hierarchy for classes.
 
         Returns:
+<<<<<<< HEAD
             np.ndarray: The matrix of the corresponding relationship between
+=======
+            dict: Annotation info of specified index.
+        """
+        img_id = self.data_infos[idx]['img_id']
+        bboxes = []
+        labels = []
+        bboxes_ignore = []
+        labels_ignore = []
+        is_occludeds = []
+        is_truncateds = []
+        is_group_ofs = []
+        is_depictions = []
+        is_insides = []
+        for obj in self.ann_infos[img_id]:
+            label = int(obj['label'])
+            bbox = [
+                float(obj['bbox'][0]),
+                float(obj['bbox'][1]),
+                float(obj['bbox'][2]),
+                float(obj['bbox'][3])
+            ]
+            bboxes.append(bbox)
+            labels.append(label)
+
+            # Other parameters
+            is_occludeds.append(obj['is_occluded'])
+            is_truncateds.append(obj['is_truncated'])
+            is_group_ofs.append(obj['is_group_of'])
+            is_depictions.append(obj['is_depiction'])
+            is_insides.append(obj['is_inside'])
+        if not bboxes:
+            bboxes = np.zeros((0, 4))
+            labels = np.zeros((0, ))
+        else:
+            bboxes = np.array(bboxes)
+            labels = np.array(labels)
+        if not bboxes_ignore:
+            bboxes_ignore = np.zeros((0, 4))
+            labels_ignore = np.zeros((0, ))
+        else:
+            bboxes_ignore = np.array(bboxes_ignore)
+            labels_ignore = np.array(labels_ignore)
+
+        assert len(is_group_ofs) == len(labels) == len(bboxes)
+        gt_is_group_ofs = np.array(is_group_ofs, dtype=bool)
+
+        # These parameters is not used yet.
+        is_occludeds = np.array(is_occludeds, dtype=bool)
+        is_truncateds = np.array(is_truncateds, dtype=bool)
+        is_depictions = np.array(is_depictions, dtype=bool)
+        is_insides = np.array(is_insides, dtype=bool)
+
+        ann = dict(
+            bboxes=bboxes.astype(np.float32),
+            labels=labels.astype(np.int64),
+            bboxes_ignore=bboxes_ignore.astype(np.float32),
+            labels_ignore=labels_ignore.astype(np.int64),
+            gt_is_group_ofs=gt_is_group_ofs,
+            is_occludeds=is_occludeds,
+            is_truncateds=is_truncateds,
+            is_depictions=is_depictions,
+            is_insides=is_insides)
+
+        return ann
+
+    def get_meta_from_file(self, meta_file=''):
+        """Get image metas from pkl file."""
+        metas = mmcv.load(
+            meta_file,
+            file_format='pkl',
+            file_client_args=self.file_client_args)
+        assert len(metas) == len(self)
+        for i in range(len(metas)):
+            file_name = osp.split(metas[i]['filename'])[-1]
+            img_info = self.data_infos[i].get('img_info', None)
+            if img_info is not None:
+                assert file_name == osp.split(img_info['filename'])[-1]
+            else:
+                assert file_name == self.data_infos[i]['filename']
+            hw = metas[i]['ori_shape'][:2]
+            self.test_img_shapes.append(hw)
+
+    def get_meta_from_pipeline(self, results):
+        """Get image metas from pipeline."""
+        self.temp_img_metas.extend(results['img_metas'])
+        if dist.is_available() and self.world_size > 1:
+            from mmdet.apis.test import collect_results_cpu
+
+            self.test_img_metas = collect_results_cpu(self.temp_img_metas,
+                                                      len(self))
+        else:
+            self.test_img_metas = self.temp_img_metas
+
+    def get_img_shape(self, metas):
+        """Set images original shape into data_infos."""
+        assert len(metas) == len(self)
+        for i in range(len(metas)):
+            file_name = osp.split(metas[i].data['ori_filename'])[-1]
+            img_info = self.data_infos[i].get('img_info', None)
+            if img_info is not None:
+                assert file_name == osp.split(img_info['filename'])[-1]
+            else:
+                assert file_name == self.data_infos[i]['filename']
+            hw = metas[i].data['ori_shape'][:2]
+            self.test_img_shapes.append(hw)
+
+    def prepare_test_img(self, idx):
+        """Get testing data after pipeline."""
+        img_info = self.data_infos[idx]
+        results = dict(img_info=img_info)
+        if self.proposals is not None:
+            results['proposals'] = self.proposals[idx]
+        self.pre_pipeline(results)
+        results = self.pipeline(results)
+        if self.get_metas and self.load_from_pipeline:
+            self.get_meta_from_pipeline(results)
+        return results
+
+    def _filter_imgs(self, min_size=32):
+        """Filter images too small."""
+        if self.filter_empty_gt:
+            warnings.warn('OpenImageDatasets does not support '
+                          'filtering empty gt images.')
+        valid_inds = [i for i in range(len(self))]
+        return valid_inds
+
+    def _set_group_flag(self):
+        """Set flag according to image aspect ratio."""
+        self.flag = np.zeros(len(self), dtype=np.uint8)
+        # TODO: set flag without width and height
+
+    def get_relation_matrix(self, hierarchy_file):
+        """Get hierarchy for classes.
+
+        Args:
+            hierarchy_file (sty): File path to the hierarchy for classes.
+
+        Returns:
+            ndarray: The matrix of the corresponding relationship between
+>>>>>>> feature/chartdete
             the parent class and the child class, of shape
             (class_num, class_num).
         """  # noqa
@@ -282,6 +423,7 @@ class OpenImagesDataset(BaseDetDataset):
                     node, relation_matrix, parents=children)
         return relation_matrix
 
+<<<<<<< HEAD
     def _join_prefix(self):
         """Join ``self.data_root`` with annotation path."""
         super()._join_prefix()
@@ -294,6 +436,311 @@ class OpenImagesDataset(BaseDetDataset):
         if self.image_level_ann_file and not is_abs(self.image_level_ann_file):
             self.image_level_ann_file = osp.join(self.data_root,
                                                  self.image_level_ann_file)
+=======
+                class_label_tree = self._convert_hierarchy_tree(
+                    node, class_label_tree, parents=children)
+
+        return class_label_tree
+
+    def add_supercategory_ann(self, annotations):
+        """Add parent classes of the corresponding class of the ground truth
+        bboxes."""
+        for i, ann in enumerate(annotations):
+            assert len(ann['labels']) == len(ann['bboxes']) == \
+                   len(ann['gt_is_group_ofs'])
+            gt_bboxes = []
+            gt_is_group_ofs = []
+            gt_labels = []
+            for j in range(len(ann['labels'])):
+                label = ann['labels'][j]
+                bbox = ann['bboxes'][j]
+                is_group = ann['gt_is_group_ofs'][j]
+                label = np.where(self.class_label_tree[label])[0]
+                if len(label) > 1:
+                    for k in range(len(label)):
+                        gt_bboxes.append(bbox)
+                        gt_is_group_ofs.append(is_group)
+                        gt_labels.append(label[k])
+                else:
+                    gt_bboxes.append(bbox)
+                    gt_is_group_ofs.append(is_group)
+                    gt_labels.append(label[0])
+            annotations[i] = dict(
+                bboxes=np.array(gt_bboxes).astype(np.float32),
+                labels=np.array(gt_labels).astype(np.int64),
+                bboxes_ignore=ann['bboxes_ignore'],
+                gt_is_group_ofs=np.array(gt_is_group_ofs).astype(bool))
+
+        return annotations
+
+    def process_results(self, det_results, annotations,
+                        image_level_annotations):
+        """Process results of the corresponding class of the detection bboxes.
+
+        Note: It will choose to do the following two processing according to
+        the parameters:
+
+        1. Whether to add parent classes of the corresponding class of the
+        detection bboxes.
+
+        2. Whether to ignore the classes that unannotated on that image.
+        """
+        if image_level_annotations is not None:
+            assert len(annotations) == \
+                   len(image_level_annotations) == \
+                   len(det_results)
+        else:
+            assert len(annotations) == len(det_results)
+        for i in range(len(det_results)):
+            results = copy.deepcopy(det_results[i])
+            valid_classes = np.where(
+                np.array([[bbox.shape[0]] for bbox in det_results[i]]) != 0)[0]
+            if image_level_annotations is not None:
+                labels = annotations[i]['labels']
+                image_level_labels = \
+                    image_level_annotations[i]['image_level_labels']
+                allowed_labeles = np.unique(
+                    np.append(labels, image_level_labels))
+            else:
+                allowed_labeles = np.unique(annotations[i]['labels'])
+
+            for valid_class in valid_classes:
+                det_cls = np.where(self.class_label_tree[valid_class])[0]
+                for index in det_cls:
+                    if index in allowed_labeles and \
+                            index != valid_class and \
+                            self.get_supercategory:
+                        det_results[i][index] = \
+                            np.concatenate((det_results[i][index],
+                                            results[valid_class]))
+                    elif index not in allowed_labeles and self.filter_labels:
+                        # Remove useless parts
+                        det_results[i][index] = np.empty(
+                            (0, 5)).astype(np.float32)
+        return det_results
+
+    def load_image_label_from_csv(self, image_level_ann_file):
+        """Load image level annotations from csv style ann_file.
+
+        Args:
+            image_level_ann_file (str): CSV style image level annotation
+                file path.
+
+        Returns:
+            defaultdict[list[dict]]: Annotations where item of the defaultdict
+            indicates an image, each of which has (n) dicts.
+            Keys of dicts are:
+
+                - `image_level_label` (int): Label id.
+                - `confidence` (float): Labels that are human-verified to be
+                  present in an image have confidence = 1 (positive labels).
+                  Labels that are human-verified to be absent from an image
+                  have confidence = 0 (negative labels). Machine-generated
+                  labels have fractional confidences, generally >= 0.5.
+                  The higher the confidence, the smaller the chance for
+                  the label to be a false positive.
+        """
+
+        item_lists = defaultdict(list)
+        with open(image_level_ann_file, 'r') as f:
+            reader = csv.reader(f)
+            for i, line in enumerate(reader):
+                if i == 0:
+                    continue
+                img_id = line[0]
+                item_lists[img_id].append(
+                    dict(
+                        image_level_label=int(self.index_dict[line[2]]),
+                        confidence=float(line[3])))
+        return item_lists
+
+    def get_image_level_ann(self, image_level_ann_file):
+        """Get OpenImages annotation by index.
+
+        Args:
+            image_level_ann_file (str): CSV style image level annotation
+                file path.
+
+        Returns:
+            dict: Annotation info of specified index.
+        """
+
+        if hasattr(self.file_client, 'get_local_path'):
+            with self.file_client.get_local_path(image_level_ann_file) \
+                    as local_path:
+                item_lists = self.load_image_label_from_csv(local_path)
+        else:
+            item_lists = self.load_image_label_from_csv(image_level_ann_file)
+        image_level_annotations = []
+        for i in range(len(self)):
+            img_info = self.data_infos[i].get('img_info', None)
+            if img_info is not None:
+                # for Open Images Challenges
+                img_id = osp.split(img_info['filename'])[-1][:-4]
+            else:
+                # for Open Images v6
+                img_id = self.data_infos[i]['img_id']
+            item_list = item_lists.get(img_id, None)
+            if item_list is not None:
+                image_level_labels = []
+                confidences = []
+                for obj in item_list:
+                    image_level_label = int(obj['image_level_label'])
+                    confidence = float(obj['confidence'])
+
+                    image_level_labels.append(image_level_label)
+                    confidences.append(confidence)
+
+                if not image_level_labels:
+                    image_level_labels = np.zeros((0, ))
+                    confidences = np.zeros((0, ))
+                else:
+                    image_level_labels = np.array(image_level_labels)
+                    confidences = np.array(confidences)
+            else:
+                image_level_labels = np.zeros((0, ))
+                confidences = np.zeros((0, ))
+            ann = dict(
+                image_level_labels=image_level_labels.astype(np.int64),
+                confidences=confidences.astype(np.float32))
+            image_level_annotations.append(ann)
+
+        return image_level_annotations
+
+    def denormalize_gt_bboxes(self, annotations):
+        """Convert ground truth bboxes from relative position to absolute
+        position.
+
+        Only used in evaluating time.
+        """
+        assert len(self.test_img_shapes) == len(annotations)
+        for i in range(len(annotations)):
+            h, w = self.test_img_shapes[i]
+            annotations[i]['bboxes'][:, 0::2] *= w
+            annotations[i]['bboxes'][:, 1::2] *= h
+        return annotations
+
+    def get_cat_ids(self, idx):
+        """Get category ids by index.
+
+        Args:
+            idx (int): Index of data.
+
+        Returns:
+            list[int]: All categories in the image of specified index.
+        """
+        return self.get_ann_info(idx)['labels'].astype(np.int).tolist()
+
+    def evaluate(self,
+                 results,
+                 metric='mAP',
+                 logger=None,
+                 iou_thr=0.5,
+                 ioa_thr=0.5,
+                 scale_ranges=None,
+                 denorm_gt_bbox=True,
+                 use_group_of=True):
+        """Evaluate in OpenImages.
+
+        Args:
+            results (list[list | tuple]): Testing results of the dataset.
+            metric (str | list[str]): Metrics to be evaluated. Option is
+                 'mAP'. Default: 'mAP'.
+            logger (logging.Logger | str, optional): Logger used for printing
+                related information during evaluation. Default: None.
+            iou_thr (float | list[float]): IoU threshold. Default: 0.5.
+            ioa_thr (float | list[float]): IoA threshold. Default: 0.5.
+            scale_ranges (list[tuple], optional): Scale ranges for evaluating
+                mAP. If not specified, all bounding boxes would be included in
+                evaluation. Default: None
+            denorm_gt_bbox (bool): Whether to denorm ground truth bboxes from
+                relative position to absolute position. Default: True
+            use_group_of (bool): Whether consider group of groud truth bboxes
+                during evaluating. Default: True.
+
+        Returns:
+            dict[str, float]: AP metrics.
+        """
+
+        if not isinstance(metric, str):
+            assert len(metric) == 1
+            metric = metric[0]
+        allowed_metrics = ['mAP']
+        if metric not in allowed_metrics:
+            raise KeyError(f'metric {metric} is not supported')
+        annotations = [self.get_ann_info(i) for i in range(len(self))]
+
+        if self.load_image_level_labels:
+            image_level_annotations = \
+                self.get_image_level_ann(self.image_level_ann_file)
+        else:
+            image_level_annotations = None
+
+        # load metas from file
+        if self.get_metas and self.load_from_file:
+            assert self.meta_file.endswith(
+                'pkl'), 'File name must be pkl suffix'
+            self.get_meta_from_file(self.meta_file)
+        # load metas from pipeline
+        else:
+            self.get_img_shape(self.test_img_metas)
+
+        if len(self.test_img_shapes) > len(self):
+            self.test_img_shapes = self.test_img_shapes[:len(self)]
+
+        if denorm_gt_bbox:
+            annotations = self.denormalize_gt_bboxes(annotations)
+
+        # Reset test_image_metas, temp_image_metas and test_img_shapes
+        # to avoid potential error
+        self.temp_img_metas = []
+        self.test_img_shapes = []
+        self.test_img_metas = []
+        if self.get_supercategory:
+            annotations = self.add_supercategory_ann(annotations)
+
+        results = self.process_results(results, annotations,
+                                       image_level_annotations)
+        if use_group_of:
+            assert ioa_thr is not None, \
+                'ioa_thr must have value when using group_of in evaluation.'
+
+        eval_results = OrderedDict()
+        iou_thrs = [iou_thr] if isinstance(iou_thr, float) else iou_thr
+        ioa_thrs = [ioa_thr] if isinstance(ioa_thr, float) or ioa_thr is None \
+            else ioa_thr
+
+        # get dataset type
+        if len(self.CLASSES) == 500:
+            ds_name = 'oid_challenge'
+        elif len(self.CLASSES) == 601:
+            ds_name = 'oid_v6'
+        else:
+            ds_name = self.CLASSES
+            warnings.warn('Cannot infer dataset type from the length of the '
+                          'classes. Set `oid_v6` as dataset type.')
+
+        if metric == 'mAP':
+            assert isinstance(iou_thrs, list) and isinstance(ioa_thrs, list)
+            assert len(ioa_thrs) == len(iou_thrs)
+            mean_aps = []
+            for iou_thr, ioa_thr in zip(iou_thrs, ioa_thrs):
+                print_log(f'\n{"-" * 15}iou_thr, ioa_thr: {iou_thr}, {ioa_thr}'
+                          f'{"-" * 15}')
+                mean_ap, _ = eval_map(
+                    results,
+                    annotations,
+                    scale_ranges=scale_ranges,
+                    iou_thr=iou_thr,
+                    ioa_thr=ioa_thr,
+                    dataset=ds_name,
+                    logger=logger,
+                    use_group_of=use_group_of)
+                mean_aps.append(mean_ap)
+                eval_results[f'AP{int(iou_thr * 100):02d}'] = round(mean_ap, 3)
+            eval_results['mAP'] = sum(mean_aps) / len(mean_aps)
+        return eval_results
+>>>>>>> feature/chartdete
 
 
 @DATASETS.register_module()
@@ -427,8 +874,105 @@ class OpenImagesChallengeDataset(OpenImagesDataset):
             classes_names.append(label_list[index])
         return classes_names, index_mapping
 
+<<<<<<< HEAD
     def _parse_img_level_ann(self, image_level_ann_file):
         """Parse image level annotations from csv style ann_file.
+=======
+    def load_annotations(self, ann_file):
+        """Load annotation from annotation file."""
+        with open(ann_file) as f:
+            lines = f.readlines()
+        i = 0
+        ann_infos = []
+        while i < len(lines):
+            bboxes = []
+            labels = []
+            is_group_ofs = []
+            filename = lines[i].rstrip()
+            i += 2
+            img_gt_size = int(lines[i])
+            i += 1
+            for j in range(img_gt_size):
+                sp = lines[i + j].split()
+                bboxes.append(
+                    [float(sp[1]),
+                     float(sp[2]),
+                     float(sp[3]),
+                     float(sp[4])])
+                labels.append(int(sp[0]) - 1)  # labels begin from 1
+                is_group_ofs.append(True if int(sp[5]) == 1 else False)
+            i += img_gt_size
+
+            gt_bboxes = np.array(bboxes, dtype=np.float32)
+            gt_labels = np.array(labels, dtype=np.int64)
+            gt_bboxes_ignore = np.zeros((0, 4), dtype=np.float32)
+            gt_is_group_ofs = np.array(is_group_ofs, dtype=bool)
+
+            img_info = dict(filename=filename)
+            ann_info = dict(
+                bboxes=gt_bboxes,
+                labels=gt_labels,
+                bboxes_ignore=gt_bboxes_ignore,
+                gt_is_group_ofs=gt_is_group_ofs)
+            ann_infos.append(dict(img_info=img_info, ann_info=ann_info))
+
+        return ann_infos
+
+    def prepare_train_img(self, idx):
+        """Get training data and annotations after pipeline."""
+        ann_info = self.data_infos[idx]
+        results = dict(
+            img_info=ann_info['img_info'],
+            ann_info=ann_info['ann_info'],
+        )
+        if self.proposals is not None:
+            results['proposals'] = self.proposals[idx]
+        self.pre_pipeline(results)
+        return self.pipeline(results)
+
+    def prepare_test_img(self, idx):
+        """Get testing data after pipeline."""
+        ann_info = self.data_infos[idx]
+        results = dict(img_info=ann_info['img_info'])
+        if self.proposals is not None:
+            results['proposals'] = self.proposals[idx]
+        self.pre_pipeline(results)
+
+        results = self.pipeline(results)
+        if self.get_metas and self.load_from_pipeline:
+            self.get_meta_from_pipeline(results)
+        return results
+
+    def get_relation_matrix(self, hierarchy_file):
+        """Get hierarchy for classes.
+
+        Args:
+            hierarchy_file (str): File path to the hierarchy for classes.
+
+        Returns:
+            ndarray: The matrix of the corresponding
+            relationship between the parent class and the child class,
+            of shape (class_num, class_num).
+        """
+        class_label_tree = np.load(hierarchy_file, allow_pickle=True)
+        return class_label_tree[1:, 1:]
+
+    def get_ann_info(self, idx):
+        """Get OpenImages annotation by index.
+
+        Args:
+            idx (int): Index of data.
+
+        Returns:
+            dict: Annotation info of specified index.
+        """
+        # avoid some potential error
+        data_infos = copy.deepcopy(self.data_infos[idx]['ann_info'])
+        return data_infos
+
+    def load_image_label_from_csv(self, image_level_ann_file):
+        """Load image level annotations from csv style ann_file.
+>>>>>>> feature/chartdete
 
         Args:
             image_level_ann_file (str): CSV style image level annotation

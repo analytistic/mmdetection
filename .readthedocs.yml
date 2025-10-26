@@ -9,6 +9,10 @@ formats:
   - epub
 
 python:
+<<<<<<< HEAD
+=======
+  version: 3.8
+>>>>>>> feature/chartdete
   install:
     - requirements: requirements/docs.txt
     - requirements: requirements/readthedocs.txt

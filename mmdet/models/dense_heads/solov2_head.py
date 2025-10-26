@@ -12,11 +12,18 @@ from mmengine.model import BaseModule
 from mmengine.structures import InstanceData
 from torch import Tensor
 
+<<<<<<< HEAD
 from mmdet.models.utils.misc import floordiv
 from mmdet.registry import MODELS
 from mmdet.utils import ConfigType, InstanceList, MultiConfig, OptConfigType
 from ..layers import mask_matrix_nms
 from ..utils import center_of_mass, generate_coordinate, multi_apply
+=======
+from mmdet.core import InstanceData, mask_matrix_nms, multi_apply
+from mmdet.core.utils import center_of_mass, generate_coordinate
+from mmdet.models.builder import HEADS
+from mmdet.utils.misc import floordiv
+>>>>>>> feature/chartdete
 from .solo_head import SOLOHead
 
 
@@ -158,6 +165,10 @@ class MaskFeatModule(BaseModule):
                                                  input_p.device)
                 input_p = torch.cat([input_p, coord_feat], 1)
 
+<<<<<<< HEAD
+=======
+            # fix runtime error of "+=" inplace operation in PyTorch 1.10
+>>>>>>> feature/chartdete
             feature_add_all_level = feature_add_all_level + \
                 self.convs_all_levels[i](input_p)
 

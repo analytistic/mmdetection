@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 mmcv>=2.0.0rc4,<2.2.0
 mmengine>=0.7.1,<1.0.0
+=======
+mmcv
+>>>>>>> feature/chartdete
 scipy
 torch
 torchvision

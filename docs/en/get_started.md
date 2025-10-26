@@ -2,9 +2,13 @@
 
 ## Prerequisites
 
+<<<<<<< HEAD
 In this section, we demonstrate how to prepare an environment with PyTorch.
 
 MMDetection works on Linux, Windows, and macOS. It requires Python 3.7+, CUDA 9.2+, and PyTorch 1.8+.
+=======
+MMDetection works on Linux, Windows and macOS. It requires Python 3.7+, CUDA 9.2+ and PyTorch 1.5+.
+>>>>>>> feature/chartdete
 
 ```{note}
 If you are experienced with PyTorch and have already installed it, just skip this part and jump to the [next section](#installation). Otherwise, you can follow these steps for the preparation.
@@ -227,7 +231,11 @@ The following table lists affected algorithms.
 
 |                        Operator                         |                                          Model                                           |
 | :-----------------------------------------------------: | :--------------------------------------------------------------------------------------: |
+<<<<<<< HEAD
 | Deformable Convolution/Modulated Deformable Convolution | DCN, Guided Anchoring, RepPoints, CentripetalNet, VFNet, CascadeRPN, NAS-FCOS, DetectoRS |
+=======
+| Deformable Convolution/Modulated Deformable Convolution | DCN、Guided Anchoring、RepPoints、CentripetalNet、VFNet、CascadeRPN、NAS-FCOS、DetectoRS |
+>>>>>>> feature/chartdete
 |                      MaskedConv2d                       |                                     Guided Anchoring                                     |
 |                         CARAFE                          |                                          CARAFE                                          |
 |                      SyncBatchNorm                      |                                         ResNeSt                                          |

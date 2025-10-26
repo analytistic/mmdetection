@@ -1,6 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from .anchor_free_head import AnchorFreeHead
 from .anchor_head import AnchorHead
+from .ascend_anchor_head import AscendAnchorHead
+from .ascend_retina_head import AscendRetinaHead
+from .ascend_ssd_head import AscendSSDHead
 from .atss_head import ATSSHead
 from .atss_vlfusion_head import ATSSVLFusionHead
 from .autoassign_head import AutoAssignHead
@@ -59,6 +62,7 @@ __all__ = [
     'SSDHead', 'FCOSHead', 'RepPointsHead', 'FoveaHead',
     'FreeAnchorRetinaHead', 'ATSSHead', 'FSAFHead', 'NASFCOSHead',
     'PISARetinaHead', 'PISASSDHead', 'GFLHead', 'CornerHead', 'YOLACTHead',
+<<<<<<< HEAD
     'YOLACTProtonet', 'YOLOV3Head', 'PAAHead', 'SABLRetinaHead',
     'CentripetalHead', 'VFNetHead', 'StageCascadeRPNHead', 'CascadeRPNHead',
     'EmbeddingRPNHead', 'LDHead', 'AutoAssignHead', 'DETRHead', 'YOLOFHead',
@@ -69,4 +73,14 @@ __all__ = [
     'CondInstMaskHead', 'RTMDetInsHead', 'RTMDetInsSepBNHead',
     'BoxInstBboxHead', 'BoxInstMaskHead', 'ConditionalDETRHead', 'DINOHead',
     'ATSSVLFusionHead', 'DABDETRHead', 'DDQDETRHead', 'GroundingDINOHead'
+=======
+    'YOLACTSegmHead', 'YOLACTProtonet', 'YOLOV3Head', 'PAAHead',
+    'SABLRetinaHead', 'CentripetalHead', 'VFNetHead', 'StageCascadeRPNHead',
+    'CascadeRPNHead', 'EmbeddingRPNHead', 'LDHead', 'AutoAssignHead',
+    'DETRHead', 'YOLOFHead', 'DeformableDETRHead', 'SOLOHead',
+    'DecoupledSOLOHead', 'CenterNetHead', 'YOLOXHead',
+    'DecoupledSOLOLightHead', 'LADHead', 'TOODHead', 'MaskFormerHead',
+    'Mask2FormerHead', 'SOLOV2Head', 'DDODHead', 'AscendAnchorHead',
+    'AscendRetinaHead', 'AscendSSDHead'
+>>>>>>> feature/chartdete
 ]

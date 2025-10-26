@@ -10,6 +10,7 @@ from .utils import weighted_loss
 
 
 @weighted_loss
+<<<<<<< HEAD
 def mse_loss(pred: Tensor, target: Tensor) -> Tensor:
     """A Wrapper of MSE loss.
     Args:
@@ -19,6 +20,10 @@ def mse_loss(pred: Tensor, target: Tensor) -> Tensor:
     Returns:
         Tensor: loss Tensor
     """
+=======
+def mse_loss(pred, target):
+    """Wrapper of mse loss."""
+>>>>>>> feature/chartdete
     return F.mse_loss(pred, target, reduction='none')
 
 

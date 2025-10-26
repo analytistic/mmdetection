@@ -190,6 +190,24 @@ class ResultVisualizer:
         if (topk * 2) > len(dataset):
             topk = len(dataset) // 2
 
+<<<<<<< HEAD
+=======
+        if isinstance(results[0], dict):
+            good_samples, bad_samples = self.panoptic_evaluate(
+                dataset, results, topk=topk)
+        elif isinstance(results[0], list):
+            good_samples, bad_samples = self.detection_evaluate(
+                dataset, results, topk=topk)
+        elif isinstance(results[0], tuple):
+            results_ = [result[0] for result in results]
+            good_samples, bad_samples = self.detection_evaluate(
+                dataset, results_, topk=topk)
+        else:
+            raise 'The format of result is not supported yet. ' \
+                'Current dict for panoptic segmentation and list ' \
+                'or tuple for object detection are supported.'
+
+>>>>>>> feature/chartdete
         good_dir = osp.abspath(osp.join(show_dir, 'good'))
         bad_dir = osp.abspath(osp.join(show_dir, 'bad'))
 

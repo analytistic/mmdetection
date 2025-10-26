@@ -139,6 +139,7 @@ class DeformableDETRHead(DETRHead):
         all_layers_outputs_classes = torch.stack(all_layers_outputs_classes)
         all_layers_outputs_coords = torch.stack(all_layers_outputs_coords)
 
+<<<<<<< HEAD
         return all_layers_outputs_classes, all_layers_outputs_coords
 
     def loss(self, hidden_states: Tensor, references: List[Tensor],
@@ -146,6 +147,19 @@ class DeformableDETRHead(DETRHead):
              batch_data_samples: SampleList) -> dict:
         """Perform forward propagation and loss calculation of the detection
         head on the queries of the upstream network.
+=======
+    @force_fp32(apply_to=('all_cls_scores', 'all_bbox_preds'))
+    def loss(self,
+             all_cls_scores,
+             all_bbox_preds,
+             enc_cls_scores,
+             enc_bbox_preds,
+             gt_bboxes_list,
+             gt_labels_list,
+             img_metas,
+             gt_bboxes_ignore=None):
+        """"Loss function.
+>>>>>>> feature/chartdete
 
         Args:
             hidden_states (Tensor): Hidden states output from each decoder
@@ -250,6 +264,7 @@ class DeformableDETRHead(DETRHead):
             loss_dict['enc_loss_iou'] = enc_losses_iou
         return loss_dict
 
+<<<<<<< HEAD
     def predict(self,
                 hidden_states: Tensor,
                 references: List[Tensor],
@@ -257,6 +272,17 @@ class DeformableDETRHead(DETRHead):
                 rescale: bool = True) -> InstanceList:
         """Perform forward propagation and loss calculation of the detection
         head on the queries of the upstream network.
+=======
+    @force_fp32(apply_to=('all_cls_scores', 'all_bbox_preds'))
+    def get_bboxes(self,
+                   all_cls_scores,
+                   all_bbox_preds,
+                   enc_cls_scores,
+                   enc_bbox_preds,
+                   img_metas,
+                   rescale=False):
+        """Transform network outputs for a batch into bbox predictions.
+>>>>>>> feature/chartdete
 
         Args:
             hidden_states (Tensor): Hidden states output from each decoder

@@ -276,6 +276,10 @@ Models:
         Dataset: COCO
         Metrics:
           box AP: 37.9
+<<<<<<< HEAD
+=======
+    # re-release
+>>>>>>> feature/chartdete
     Weights: https://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_fpn_iou_1x_coco/faster_rcnn_r50_fpn_iou_1x_coco_20200506_095954-938e81f0.pth
 
   - Name: faster-rcnn_r50_fpn_giou_1x_coco

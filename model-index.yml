@@ -88,6 +88,7 @@ Import:
   - configs/yolo/metafile.yml
   - configs/yolof/metafile.yml
   - configs/yolox/metafile.yml
+<<<<<<< HEAD
   - configs/bytetrack/metafile.yml
   - configs/strongsort/metafile.yml
   - configs/ocsort/metafile.yml
@@ -100,3 +101,6 @@ Import:
   - configs/ddq/metafile.yml
   - configs/grounding_dino/metafile.yml
   - configs/mm_grounding_dino/metafile.yml
+=======
+  - configs/rfnext/metafile.yml
+>>>>>>> feature/chartdete

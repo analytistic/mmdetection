@@ -85,9 +85,14 @@ Apart from MMDetection, we also released a library [mmcv](https://github.com/ope
 
 ## What's New
 
+<<<<<<< HEAD
 
 ## 💎 Stable version
 
+=======
+### 💎 Stable version
+
+>>>>>>> feature/chartdete
 **2.28.2** was released in 27/2/2023:
 
 - Fixed some known documentation, configuration and linking error issues

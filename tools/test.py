@@ -9,10 +9,20 @@ from mmengine import ConfigDict
 from mmengine.config import Config, DictAction
 from mmengine.runner import Runner
 
+<<<<<<< HEAD
 from mmdet.engine.hooks.utils import trigger_visualization_hook
 from mmdet.evaluation import DumpDetResults
 from mmdet.registry import RUNNERS
 from mmdet.utils import setup_cache_size_limit_of_dynamo
+=======
+from mmdet.apis import multi_gpu_test, single_gpu_test
+from mmdet.datasets import (build_dataloader, build_dataset,
+                            replace_ImageToTensor)
+from mmdet.models import build_detector
+from mmdet.utils import (build_ddp, build_dp, compat_cfg, get_device,
+                         replace_cfg_vals, rfnext_init_model,
+                         setup_multi_processes, update_data_root)
+>>>>>>> feature/chartdete
 
 
 # TODO: support fuse_conv_bn and format_only
@@ -141,8 +151,104 @@ def main():
         runner.test_evaluator.metrics.append(
             DumpDetResults(out_file_path=args.out))
 
+<<<<<<< HEAD
     # start testing
     runner.test()
+=======
+    # in case the test dataset is concatenated
+    if isinstance(cfg.data.test, dict):
+        cfg.data.test.test_mode = True
+        if cfg.data.test_dataloader.get('samples_per_gpu', 1) > 1:
+            # Replace 'ImageToTensor' to 'DefaultFormatBundle'
+            cfg.data.test.pipeline = replace_ImageToTensor(
+                cfg.data.test.pipeline)
+    elif isinstance(cfg.data.test, list):
+        for ds_cfg in cfg.data.test:
+            ds_cfg.test_mode = True
+        if cfg.data.test_dataloader.get('samples_per_gpu', 1) > 1:
+            for ds_cfg in cfg.data.test:
+                ds_cfg.pipeline = replace_ImageToTensor(ds_cfg.pipeline)
+
+    test_loader_cfg = {
+        **test_dataloader_default_args,
+        **cfg.data.get('test_dataloader', {})
+    }
+
+    rank, _ = get_dist_info()
+    # allows not to create
+    if args.work_dir is not None and rank == 0:
+        mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
+        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+        json_file = osp.join(args.work_dir, f'eval_{timestamp}.json')
+
+    # build the dataloader
+    dataset = build_dataset(cfg.data.test)
+    data_loader = build_dataloader(dataset, **test_loader_cfg)
+
+    # build the model and load checkpoint
+    cfg.model.train_cfg = None
+    model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
+    # init rfnext if 'RFSearchHook' is defined in cfg
+    rfnext_init_model(model, cfg=cfg)
+    fp16_cfg = cfg.get('fp16', None)
+    if fp16_cfg is None and cfg.get('device', None) == 'npu':
+        fp16_cfg = dict(loss_scale='dynamic')
+    if fp16_cfg is not None:
+        wrap_fp16_model(model)
+    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
+    if args.fuse_conv_bn:
+        model = fuse_conv_bn(model)
+    # old versions did not save class info in checkpoints, this walkaround is
+    # for backward compatibility
+    if 'CLASSES' in checkpoint.get('meta', {}):
+        model.CLASSES = checkpoint['meta']['CLASSES']
+    else:
+        model.CLASSES = dataset.CLASSES
+
+    if not distributed:
+        model = build_dp(model, cfg.device, device_ids=cfg.gpu_ids)
+        outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
+                                  args.show_score_thr)
+    else:
+        model = build_ddp(
+            model,
+            cfg.device,
+            device_ids=[int(os.environ['LOCAL_RANK'])],
+            broadcast_buffers=False)
+
+        # In multi_gpu_test, if tmpdir is None, some tesnors
+        # will init on cuda by default, and no device choice supported.
+        # Init a tmpdir to avoid error on npu here.
+        if cfg.device == 'npu' and args.tmpdir is None:
+            args.tmpdir = './npu_tmpdir'
+
+        outputs = multi_gpu_test(
+            model, data_loader, args.tmpdir, args.gpu_collect
+            or cfg.evaluation.get('gpu_collect', False))
+
+    rank, _ = get_dist_info()
+    if rank == 0:
+        if args.out:
+            print(f'\nwriting results to {args.out}')
+            mmcv.dump(outputs, args.out)
+        kwargs = {} if args.eval_options is None else args.eval_options
+        if args.format_only:
+            dataset.format_results(outputs, **kwargs)
+        if args.eval:
+            eval_kwargs = cfg.get('evaluation', {}).copy()
+            # hard-code way to remove EvalHook args
+            for key in [
+                    'interval', 'tmpdir', 'start', 'gpu_collect', 'save_best',
+                    'rule', 'dynamic_intervals'
+            ]:
+                eval_kwargs.pop(key, None)
+            eval_kwargs.update(dict(metric=args.eval, **kwargs))
+            metric = dataset.evaluate(outputs, **eval_kwargs)
+            print(metric)
+            metric_dict = dict(config=args.config, metric=metric)
+            if args.work_dir is not None and rank == 0:
+                mmcv.dump(metric_dict, json_file)
+>>>>>>> feature/chartdete
 
 
 if __name__ == '__main__':

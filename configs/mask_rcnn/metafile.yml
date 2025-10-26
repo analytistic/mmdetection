@@ -414,7 +414,11 @@ Models:
 
   - Name: mask-rcnn_x101-32x8d_fpn_ms-poly-3x_coco
     In Collection: Mask R-CNN
+<<<<<<< HEAD
     Config: configs/mask_rcnn/mask-rcnn_x101-32x8d_fpn_ms-poly-3x_coco.py
+=======
+    Config: configs/mask_rcnn/mask_rcnn_x101_32x8d_fpn_mstrain-poly_3x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 10.3
       Epochs: 36

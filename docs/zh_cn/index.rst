@@ -12,7 +12,13 @@ Welcome to MMDetection's documentation!
    :maxdepth: 2
    :caption: 使用指南
 
+<<<<<<< HEAD
    user_guides/index.rst
+=======
+   1_exist_data_model.md
+   2_new_data_model.md
+   3_exist_data_new_model.md
+>>>>>>> feature/chartdete
 
 .. toctree::
    :maxdepth: 2
@@ -34,6 +40,7 @@ Welcome to MMDetection's documentation!
 
 .. toctree::
    :maxdepth: 1
+<<<<<<< HEAD
    :caption: 模型仓库
 
    model_zoo.md
@@ -58,6 +65,11 @@ Welcome to MMDetection's documentation!
 
    switch_language.md
 
+=======
+   :caption: 设备支持
+
+   device/npu.md
+>>>>>>> feature/chartdete
 
 
 Indices and tables

@@ -636,6 +636,7 @@ Evaluation results have been saved to occluded_separated_recall.json.
 
 ### Online evaluation
 
+<<<<<<< HEAD:docs/en/user_guides/useful_tools.md
 We implement `CocoOccludedSeparatedMetric` which inherits from the `CocoMetic`.
 To evaluate the recall of separated and occluded masks during training, just replace the evaluator metric type with `'CocoOccludedSeparatedMetric'` in your config:
 
@@ -646,6 +647,30 @@ val_evaluator = dict(
     metric=['bbox', 'segm'],
     format_only=False)
 test_evaluator = val_evaluator
+=======
+We implement `OccludedSeparatedCocoDataset` which inherited from the `CocoDataset`.
+To evaluate the recall of separated and occluded masks during training, just replace the validation dataset type with `'OccludedSeparatedCocoDataset'` in your config:
+
+```python
+data = dict(
+    samples_per_gpu=2,
+    workers_per_gpu=2,
+    train=dict(
+        type=dataset_type,
+        ann_file=data_root + 'annotations/instances_train2017.json',
+        img_prefix=data_root + 'train2017/',
+        pipeline=train_pipeline),
+    val=dict(
+        type='OccludedSeparatedCocoDataset',  # modify this
+        ann_file=data_root + 'annotations/instances_val2017.json',
+        img_prefix=data_root + 'val2017/',
+        pipeline=test_pipeline),
+    test=dict(
+        type='OccludedSeparatedCocoDataset',  # modify this
+        ann_file=data_root + 'annotations/instances_val2017.json',
+        img_prefix=data_root + 'val2017/',
+        pipeline=test_pipeline))
+>>>>>>> feature/chartdete:docs/en/useful_tools.md
 ```
 
 Please cite the paper if you use this metric:

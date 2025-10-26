@@ -91,7 +91,11 @@ class RPNHead(AnchorHead):
                     level, the channels number is num_base_priors * 4.
         """
         x = self.rpn_conv(x)
+<<<<<<< HEAD
         x = F.relu(x)
+=======
+        x = F.relu(x, inplace=False)
+>>>>>>> feature/chartdete
         rpn_cls_score = self.rpn_cls(x)
         rpn_bbox_pred = self.rpn_reg(x)
         return rpn_cls_score, rpn_bbox_pred

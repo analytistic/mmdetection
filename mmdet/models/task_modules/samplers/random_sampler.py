@@ -17,7 +17,11 @@ class RandomSampler(BaseSampler):
     Args:
         num (int): Number of samples
         pos_fraction (float): Fraction of positive samples
+<<<<<<< HEAD:mmdet/models/task_modules/samplers/random_sampler.py
         neg_pos_up (int): Upper bound number of negative and
+=======
+        neg_pos_ub (int, optional): Upper bound number of negative and
+>>>>>>> feature/chartdete:mmdet/core/bbox/samplers/random_sampler.py
             positive samples. Defaults to -1.
         add_gt_as_proposals (bool): Whether to add ground truth
             boxes as proposals. Defaults to True.

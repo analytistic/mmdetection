@@ -34,6 +34,7 @@ Welcome to MMDetection's documentation!
 
 .. toctree::
    :maxdepth: 1
+<<<<<<< HEAD
    :caption: Model Zoo
 
    model_zoo.md
@@ -55,6 +56,11 @@ Welcome to MMDetection's documentation!
    switch_language.md
 
 
+=======
+   :caption: Device Support
+
+   device/npu.md
+>>>>>>> feature/chartdete
 
 Indices and tables
 ==================

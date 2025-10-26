@@ -122,6 +122,7 @@ class MaskFormerHead(AnchorFreeHead):
         self.test_cfg = test_cfg
         self.train_cfg = train_cfg
         if train_cfg:
+<<<<<<< HEAD
             self.assigner = TASK_UTILS.build(train_cfg['assigner'])
             self.sampler = TASK_UTILS.build(
                 train_cfg['sampler'], default_args=dict(context=self))
@@ -130,6 +131,16 @@ class MaskFormerHead(AnchorFreeHead):
         self.loss_cls = MODELS.build(loss_cls)
         self.loss_mask = MODELS.build(loss_mask)
         self.loss_dice = MODELS.build(loss_dice)
+=======
+            self.assigner = build_assigner(train_cfg.get('assigner', None))
+            self.sampler = build_sampler(
+                train_cfg.get('sampler', None), context=self)
+
+        self.class_weight = loss_cls.get('class_weight', None)
+        self.loss_cls = build_loss(loss_cls)
+        self.loss_mask = build_loss(loss_mask)
+        self.loss_dice = build_loss(loss_dice)
+>>>>>>> feature/chartdete
 
     def init_weights(self) -> None:
         if isinstance(self.decoder_input_proj, Conv2d):

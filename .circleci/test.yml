@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> feature/chartdete
 version: 2.1
 
 # the default pipeline parameters, which will be updated according to
@@ -25,8 +30,12 @@ jobs:
           name: Check docstring coverage
           command: |
             pip install interrogate
+<<<<<<< HEAD
             interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --ignore-magic --ignore-regex "__repr__" --fail-under 85 mmdet
 
+=======
+            interrogate -v --ignore-init-method --ignore-module --ignore-nested-functions --ignore-regex "__repr__" --fail-under 50 mmdet
+>>>>>>> feature/chartdete
   build_cpu:
     parameters:
       # The python version must match available image tags in
@@ -43,6 +52,7 @@ jobs:
     steps:
       - checkout
       - run:
+<<<<<<< HEAD
           name: Install Libraries
           command: |
             sudo apt-get update
@@ -52,11 +62,28 @@ jobs:
           command: |
             pip install --upgrade pip
             pip install wheel
+=======
+          name: Get MMCV_TORCH as environment variables
+          command: |
+            . .circleci/scripts/get_mmcv_var.sh << parameters.torch >>
+            source $BASH_ENV
+      - run:
+          name: Install Libraries
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 libgl1-mesa-glx libjpeg-dev zlib1g-dev libtinfo-dev libncurses5 libgeos-dev cmake git
+      - run:
+          name: Configure Python & pip
+          command: |
+            python -m pip install --upgrade pip
+            python -m pip install wheel
+>>>>>>> feature/chartdete
       - run:
           name: Install PyTorch
           command: |
             python -V
             python -m pip install torch==<< parameters.torch >>+cpu torchvision==<< parameters.torchvision >>+cpu -f https://download.pytorch.org/whl/torch_stable.html
+<<<<<<< HEAD
       - when:
           condition:
             equal: ["3.9.0", << parameters.python >>]
@@ -81,19 +108,36 @@ jobs:
           name: Build and install
           command: |
             pip install -e .
+=======
+      - run:
+          name: Install mmdet dependencies
+          command: |
+            python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch${MMCV_TORCH}/index.html
+            python -m pip install -r requirements.txt
+            python -m pip install albumentations --no-binary qudida,albumentations
+            python -m pip install git+https://github.com/cocodataset/panopticapi.git
+      - run:
+          name: Build and install
+          command: |
+            python -m pip install -e .
+>>>>>>> feature/chartdete
       - run:
           name: Run unittests
           command: |
             python -m coverage run --branch --source mmdet -m pytest tests/
             python -m coverage xml
             python -m coverage report -m
+<<<<<<< HEAD
 
+=======
+>>>>>>> feature/chartdete
   build_cuda:
     parameters:
       torch:
         type: string
       cuda:
         type: enum
+<<<<<<< HEAD
         enum: ["11.1", "11.7", "11.8"]
       cudnn:
         type: integer
@@ -143,6 +187,47 @@ jobs:
           command: |
             docker exec mmdetection python -m pytest tests/
 
+=======
+        enum: ["10.1", "10.2", "11.1"]
+      cudnn:
+        type: integer
+        default: 7
+    machine:
+      image: ubuntu-2004-cuda-11.4:202110-01
+      docker_layer_caching: true
+    resource_class: gpu.nvidia.small
+    steps:
+      - checkout
+      - run:
+          name: Get MMCV_TORCH and MMCV_CUDA as environment variables
+          command: |
+            . .circleci/scripts/get_mmcv_var.sh << parameters.torch >> << parameters.cuda >>
+            source $BASH_ENV
+      - run:
+          name: Build Docker image
+          command: |
+            docker build .circleci/docker -t mmdet:gpu --build-arg PYTORCH=<< parameters.torch >> --build-arg CUDA=<< parameters.cuda >> --build-arg CUDNN=<< parameters.cudnn >>
+            docker run --gpus all -t -d -v /home/circleci/project:/mmdet -w /mmdet --name mmdet mmdet:gpu
+      - run:
+          name: Install mmdet dependencies
+          command: |
+            docker exec mmdet pip install --upgrade pip
+            docker exec mmdet pip install wheel
+            docker exec mmdet pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/${MMCV_CUDA}/torch${MMCV_TORCH}/index.html
+            docker exec mmdet pip install -r requirements.txt
+            docker exec mmdet pip install typing-extensions -U
+            docker exec mmdet pip install albumentations --use-pep517 qudida albumentations
+            docker exec mmdet python -c 'import albumentations; print(albumentations.__version__)'
+            docker exec mmdet pip install git+https://github.com/cocodataset/panopticapi.git
+      - run:
+          name: Build and install
+          command: |
+            docker exec mmdet pip install -e .
+      - run:
+          name: Run unittests
+          command: |
+            docker exec mmdet python -m pytest tests/
+>>>>>>> feature/chartdete
 workflows:
   pr_stage_lint:
     when: << pipeline.parameters.lint_only >>
@@ -152,29 +237,52 @@ workflows:
           filters:
             branches:
               ignore:
+<<<<<<< HEAD
                 - dev-3.x
   pr_stage_test:
     when:
       not: << pipeline.parameters.lint_only >>
+=======
+                - master
+  pr_stage_test:
+    when:
+      not:
+        << pipeline.parameters.lint_only >>
+>>>>>>> feature/chartdete
     jobs:
       - lint:
           name: lint
           filters:
             branches:
               ignore:
+<<<<<<< HEAD
                 - dev-3.x
       - build_cpu:
           name: minimum_version_cpu
           torch: 1.8.0
           torchvision: 0.9.0
           python: 3.7.16
+=======
+                - master
+      - build_cpu:
+          name: minimum_version_cpu
+          torch: 1.6.0
+          torchvision: 0.7.0
+          python: 3.7.7
+>>>>>>> feature/chartdete
           requires:
             - lint
       - build_cpu:
           name: maximum_version_cpu
+<<<<<<< HEAD
           torch: 2.0.0
           torchvision: 0.15.1
           python: 3.9.0
+=======
+          torch: 1.9.0
+          torchvision: 0.10.0
+          python: 3.8.0
+>>>>>>> feature/chartdete
           requires:
             - minimum_version_cpu
       - hold:
@@ -186,6 +294,7 @@ workflows:
           torch: 1.8.1
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
+<<<<<<< HEAD
           cuda: "11.1"
           requires:
             - hold
@@ -194,10 +303,14 @@ workflows:
           torch: 2.0.0
           cuda: "11.7"
           cudnn: 8
+=======
+          cuda: "10.2"
+>>>>>>> feature/chartdete
           requires:
             - hold
   merge_stage_test:
     when:
+<<<<<<< HEAD
       not: << pipeline.parameters.lint_only >>
     jobs:
       - build_cuda:
@@ -208,3 +321,18 @@ workflows:
             branches:
               only:
                 - dev-3.x
+=======
+      not:
+        << pipeline.parameters.lint_only >>
+    jobs:
+      - build_cuda:
+          name: minimum_version_gpu
+          torch: 1.6.0
+          # Use double quotation mark to explicitly specify its type
+          # as string instead of number
+          cuda: "10.1"
+          filters:
+            branches:
+              only:
+                - master
+>>>>>>> feature/chartdete

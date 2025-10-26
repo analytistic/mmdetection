@@ -44,6 +44,7 @@ Compatibility issue between MMCV and MMDetection; "ConvWS is already registered 
 
 Compatible MMDetection, MMEngine, and MMCV versions are shown as below. Please choose the correct version of MMCV to avoid installation issues.
 
+<<<<<<< HEAD:docs/en/notes/faq.md
 | MMDetection version |      MMCV version       |     MMEngine version     |
 | :-----------------: | :---------------------: | :----------------------: |
 |        main         |  mmcv>=2.0.0, \<2.2.0   | mmengine>=0.7.1, \<1.0.0 |
@@ -63,6 +64,50 @@ Compatible MMDetection, MMEngine, and MMCV versions are shown as below. Please c
 
 1. If you want to install mmdet-v2.x, the compatible MMDetection and MMCV versions table can be found at [here](https://mmdetection.readthedocs.io/en/stable/faq.html#installation). Please choose the correct version of MMCV to avoid installation issues.
 2. In MMCV-v2.x, `mmcv-full` is rename to `mmcv`, if you want to install `mmcv` without CUDA ops, you can install `mmcv-lite`.
+=======
+| MMDetection version |        MMCV version        |
+| :-----------------: | :------------------------: |
+|       master        | mmcv-full>=1.3.17, \<1.8.0 |
+|       2.28.2        | mmcv-full>=1.3.17, \<1.8.0 |
+|       2.28.1        | mmcv-full>=1.3.17, \<1.8.0 |
+|       2.28.0        | mmcv-full>=1.3.17, \<1.8.0 |
+|       2.27.0        | mmcv-full>=1.3.17, \<1.8.0 |
+|       2.26.0        | mmcv-full>=1.3.17, \<1.8.0 |
+|       2.25.3        | mmcv-full>=1.3.17, \<1.7.0 |
+|       2.25.2        | mmcv-full>=1.3.17, \<1.7.0 |
+|       2.25.1        | mmcv-full>=1.3.17, \<1.6.0 |
+|       2.25.0        | mmcv-full>=1.3.17, \<1.6.0 |
+|       2.24.1        | mmcv-full>=1.3.17, \<1.6.0 |
+|       2.24.0        | mmcv-full>=1.3.17, \<1.6.0 |
+|       2.23.0        | mmcv-full>=1.3.17, \<1.5.0 |
+|       2.22.0        | mmcv-full>=1.3.17, \<1.5.0 |
+|       2.21.0        | mmcv-full>=1.3.17, \<1.5.0 |
+|       2.20.0        | mmcv-full>=1.3.17, \<1.5.0 |
+|       2.19.1        | mmcv-full>=1.3.17, \<1.5.0 |
+|       2.19.0        | mmcv-full>=1.3.17, \<1.5.0 |
+|       2.18.0        | mmcv-full>=1.3.17, \<1.4.0 |
+|       2.17.0        | mmcv-full>=1.3.14, \<1.4.0 |
+|       2.16.0        | mmcv-full>=1.3.8, \<1.4.0  |
+|       2.15.1        | mmcv-full>=1.3.8, \<1.4.0  |
+|       2.15.0        | mmcv-full>=1.3.8, \<1.4.0  |
+|       2.14.0        | mmcv-full>=1.3.8, \<1.4.0  |
+|       2.13.0        | mmcv-full>=1.3.3, \<1.4.0  |
+|       2.12.0        | mmcv-full>=1.3.3, \<1.4.0  |
+|       2.11.0        | mmcv-full>=1.2.4, \<1.4.0  |
+|       2.10.0        | mmcv-full>=1.2.4, \<1.4.0  |
+|        2.9.0        | mmcv-full>=1.2.4, \<1.4.0  |
+|        2.8.0        | mmcv-full>=1.2.4, \<1.4.0  |
+|        2.7.0        | mmcv-full>=1.1.5, \<1.4.0  |
+|        2.6.0        | mmcv-full>=1.1.5, \<1.4.0  |
+|        2.5.0        | mmcv-full>=1.1.5, \<1.4.0  |
+|        2.4.0        | mmcv-full>=1.1.1, \<1.4.0  |
+|        2.3.0        |      mmcv-full==1.0.5      |
+|      2.3.0rc0       |      mmcv-full>=1.0.2      |
+|        2.2.1        |        mmcv==0.6.2         |
+|        2.2.0        |        mmcv==0.6.2         |
+|        2.1.0        |   mmcv>=0.5.9, \<=0.6.1    |
+|        2.0.0        |   mmcv>=0.5.1, \<=0.5.8    |
+>>>>>>> feature/chartdete:docs/en/faq.md
 
 - "No module named 'mmcv.ops'"; "No module named 'mmcv.\_ext'".
 

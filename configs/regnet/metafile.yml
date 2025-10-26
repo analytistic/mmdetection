@@ -548,9 +548,15 @@ Models:
       URL: https://github.com/open-mmlab/mmdetection/blob/v2.1.0/mmdet/models/backbones/regnet.py#L11
       Version: v2.1.0
 
+<<<<<<< HEAD
   - Name: mask-rcnn_regnetx-1.6GF_fpn_ms-poly-3x_coco
     In Collection: Mask R-CNN
     Config: configs/regnet/mask-rcnn_regnetx-1.6GF_fpn_ms-poly-3x_coco.py
+=======
+  - Name: mask_rcnn_regnetx-1.6GF_fpn_mstrain-poly_3x_coco
+    In Collection: Mask R-CNN
+    Config: configs/regnet/mask_rcnn_regnetx-1.6GF_fpn_mstrain-poly_3x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 3.6
       Epochs: 36
@@ -610,9 +616,15 @@ Models:
       URL: https://github.com/open-mmlab/mmdetection/blob/v2.1.0/mmdet/models/backbones/regnet.py#L11
       Version: v2.1.0
 
+<<<<<<< HEAD
   - Name: mask-rcnn_regnetx-4GF_fpn_ms-poly-3x_coco
     In Collection: Mask R-CNN
     Config: configs/regnet/mask-rcnn_regnetx-4GF_fpn_ms-poly-3x_coco.py
+=======
+  - Name: mask_rcnn_regnetx-4GF_fpn_mstrain-poly_3x_coco
+    In Collection: Mask R-CNN
+    Config: configs/regnet/mask_rcnn_regnetx-4GF_fpn_mstrain-poly_3x_coco.py
+>>>>>>> feature/chartdete
     Metadata:
       Training Memory (GB): 5.1
       Epochs: 36

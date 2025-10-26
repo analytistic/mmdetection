@@ -7,7 +7,11 @@ from tarfile import TarFile
 from zipfile import ZipFile
 
 import torch
+<<<<<<< HEAD
 from mmengine.utils.path import mkdir_or_exist
+=======
+from mmcv.utils.path import mkdir_or_exist
+>>>>>>> feature/chartdete
 
 
 def parse_args():
@@ -162,6 +166,7 @@ def main():
             'http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtest_06-Nov-2007.tar',  # noqa
             'http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCdevkit_08-Jun-2007.tar',  # noqa
         ],
+<<<<<<< HEAD
         voc2012=[
             'http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar',  # noqa
         ],
@@ -169,6 +174,8 @@ def main():
             # src link: https://github.com/matterport/Mask_RCNN/releases/download/v2.1/balloon_dataset.zip # noqa
             'https://download.openmmlab.com/mmyolo/data/balloon_dataset.zip'
         ],
+=======
+>>>>>>> feature/chartdete
         # Note: There is no download link for Objects365-V1 right now. If you
         # would like to download Objects365-V1, please visit
         # http://www.objects365.org/ to concat the author.
@@ -183,6 +190,7 @@ def main():
             'https://dorc.ks3-cn-beijing.ksyun.com/data-set/2020Objects365%E6%95%B0%E6%8D%AE%E9%9B%86/val/images/v1/',  # noqa
             # validation url root_2
             'https://dorc.ks3-cn-beijing.ksyun.com/data-set/2020Objects365%E6%95%B0%E6%8D%AE%E9%9B%86/val/images/v2/'  # noqa
+<<<<<<< HEAD
         ],
         ade20k_2016=[
             # training images and semantic segmentation annotations
@@ -208,6 +216,12 @@ def main():
     if url is None:
         print('Only support ADE20K, COCO, RefCOCO, VOC, LVIS, '
               'balloon, and Objects365v2 now!')
+=======
+        ])
+    url = data2url.get(args.dataset_name, None)
+    if url is None:
+        print('Only support COCO, VOC, LVIS, and Objects365v2 now!')
+>>>>>>> feature/chartdete
         return
     if args.dataset_name == 'objects365v2':
         download_objects365v2(
